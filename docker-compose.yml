@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  server:
+    build:
+      context: ./server
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - NODE_ENV=production
+      - CLIENT_URL=http://localhost:80
+      # Provide other necessary environment variables or use env_file
+    env_file:
+      - ./server/.env
+    depends_on:
+      - client
+    networks:
+      - aixpense-network
+
+  client:
+    build:
+      context: ./client
+    ports:
+      - "80:80"
+    networks:
+      - aixpense-network
+
+networks:
+  aixpense-network:
+    driver: bridge
